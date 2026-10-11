@@ -203,6 +203,105 @@
         .btn-copy:hover {
             background-color: #ebf8ff;
         }
+        .review-section {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .review-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 8px 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: #f7fafc;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: #3182ce;
+            color: #ffffff;
+            border-color: #3182ce;
+        }
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .review-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .review-list::-webkit-scrollbar-thumb {
+            background-color: #cbd5e0;
+            border-radius: 4px;
+        }
+        .review-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 14px;
+            background: #ffffff;
+            font-size: 0.95rem;
+        }
+        .review-card.is-wrong {
+            border-color: #feb2b2;
+            background: #fffafa;
+        }
+        .review-card.is-correct {
+            border-color: #9ae6b4;
+            background: #f0fff4;
+        }
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+        .review-card-q {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            line-height: 1.45;
+            white-space: pre-line;
+            font-size: 0.92rem;
+        }
+        .ans-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+        .ans-pill {
+            padding: 6px 10px;
+            border-radius: 6px;
+            line-height: 1.35;
+        }
+        .ans-user-wrong {
+            background: #fff5f5;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+        .ans-user-correct {
+            background: #f0fff4;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+        .ans-correct-key {
+            background: #e6fffa;
+            color: #234e52;
+            border: 1px solid #81e6d9;
+            font-weight: 600;
+        }
         .btn-retry {
             width: 100%;
             margin-top: 12px;
@@ -291,6 +390,22 @@
             <div class="score-number" id="res-score">0 / 20 Benar</div>
             <div class="grade-number" id="res-grade">Nilai Akhir: 0</div>
             <div id="res-status" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem;"></div>
+        </div>
+
+        <!-- Bagian Pembahasan & Evaluasi Soal Salah -->
+        <div class="review-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="font-size: 1.05rem; color: #1a202c;">📝 Koreksi & Pembahasan Soal</h3>
+                <span id="wrong-summary-badge" style="font-size: 0.78rem; font-weight: 700; padding: 3px 8px; border-radius: 12px; background: #fed7d7; color: #c53030;">0 Salah</span>
+            </div>
+
+            <div class="review-tabs">
+                <button id="tab-wrong" class="tab-btn active" onclick="filterReview('wrong')">❌ Soal Salah</button>
+                <button id="tab-all" class="tab-btn" onclick="filterReview('all')">📋 Semua Soal</button>
+                <button id="tab-correct" class="tab-btn" onclick="filterReview('correct')">✅ Soal Benar</button>
+            </div>
+
+            <div id="review-list" class="review-list"></div>
         </div>
 
         <p style="font-size: 0.85rem; color: #718096; margin-bottom: 12px;">
@@ -438,6 +553,8 @@
     let score = 0;
     let timeLeft = 300; 
     let timerInterval = null;
+    let userAnswers = [];
+    let currentFilter = 'wrong';
     const targetPhone = "6281233624841";
 
     function startQuiz() {
@@ -456,6 +573,8 @@
         currentQuestionIndex = 0;
         score = 0;
         timeLeft = 300;
+        userAnswers = new Array(questions.length).fill(null);
+        currentFilter = 'wrong';
         startTimer();
         loadQuestion();
     }
@@ -500,6 +619,7 @@
     }
 
     function selectOption(selectedIndex) {
+        userAnswers[currentQuestionIndex] = selectedIndex;
         if (selectedIndex === questions[currentQuestionIndex].correct) {
             score++;
         }
@@ -532,6 +652,21 @@
         statusEl.innerText = statusText;
         statusEl.style.color = statusColor;
 
+        // Render review soal salah / benar
+        renderReview();
+
+        // Cari nomor soal yang salah untuk laporan
+        const wrongNumbers = [];
+        questions.forEach((q, idx) => {
+            if (userAnswers[idx] !== q.correct) {
+                wrongNumbers.push(idx + 1);
+            }
+        });
+
+        const wrongLine = wrongNumbers.length > 0 
+            ? `\n❌ *Soal Salah:* No. ${wrongNumbers.join(', ')} (${wrongNumbers.length} soal)`
+            : `\n🎉 *Semua Soal Benar!*`;
+
         // Siapkan tautan pengiriman pesan WhatsApp untuk Grup
         currentWaMessage = 
 `*--- HASIL TES 日本語クラス ---*
@@ -539,11 +674,112 @@
 📊 *Jumlah Benar:* ${score} dari ${questions.length} soal
 💯 *Nilai Akhir:* ${finalGrade} / 100
 ⏱️ *Sisa Waktu:* ${Math.floor(timeLeft / 60)} m ${timeLeft % 60} s
-📌 *Status:* ${statusText}`;
+📌 *Status:* ${statusText}${wrongLine}`;
 
         // Menggunakan Universal WhatsApp Share agar peserta bisa memilih Grup WA langsung
         const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(currentWaMessage)}`;
         document.getElementById('wa-btn').href = waUrl;
+    }
+
+    function filterReview(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const activeTab = document.getElementById(`tab-${filter}`);
+        if (activeTab) activeTab.classList.add('active');
+        renderReview();
+    }
+
+    function renderReview() {
+        const listEl = document.getElementById('review-list');
+        if (!listEl) return;
+
+        let wrongCount = 0;
+        let correctCount = 0;
+        questions.forEach((q, idx) => {
+            if (userAnswers[idx] === q.correct) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
+        });
+
+        const wrongBadge = document.getElementById('wrong-summary-badge');
+        if (wrongBadge) {
+            if (wrongCount === 0) {
+                wrongBadge.innerText = 'Semua Benar! 🎉';
+                wrongBadge.style.background = '#c6f6d5';
+                wrongBadge.style.color = '#22543d';
+            } else {
+                wrongBadge.innerText = `${wrongCount} Soal Salah`;
+                wrongBadge.style.background = '#fed7d7';
+                wrongBadge.style.color = '#c53030';
+            }
+        }
+
+        const tabWrong = document.getElementById('tab-wrong');
+        const tabCorrect = document.getElementById('tab-correct');
+        const tabAll = document.getElementById('tab-all');
+        if (tabWrong) tabWrong.innerText = `❌ Salah (${wrongCount})`;
+        if (tabCorrect) tabCorrect.innerText = `✅ Benar (${correctCount})`;
+        if (tabAll) tabAll.innerText = `📋 Semua (${questions.length})`;
+
+        // Jika tidak ada salah dan filter adalah 'wrong', tampilkan 'all'
+        let effectiveFilter = currentFilter;
+        if (wrongCount === 0 && currentFilter === 'wrong') {
+            effectiveFilter = 'all';
+            if (tabWrong) tabWrong.classList.remove('active');
+            if (tabAll) tabAll.classList.add('active');
+        }
+
+        let itemsHtml = '';
+        questions.forEach((q, idx) => {
+            const userChoiceIdx = userAnswers[idx];
+            const isCorrect = userChoiceIdx === q.correct;
+
+            if (effectiveFilter === 'wrong' && isCorrect) return;
+            if (effectiveFilter === 'correct' && !isCorrect) return;
+
+            const userChoiceText = (userChoiceIdx !== null && userChoiceIdx !== undefined)
+                ? q.options[userChoiceIdx] 
+                : '⚠️ Tidak Terjawab (Waktu Habis)';
+            const correctChoiceText = q.options[q.correct];
+
+            itemsHtml += `
+                <div class="review-card ${isCorrect ? 'is-correct' : 'is-wrong'}">
+                    <div class="review-card-header">
+                        <span style="color: #4a5568;">Soal #${idx + 1}</span>
+                        <span style="color: ${isCorrect ? '#2f855a' : '#e53e3e'}; font-weight: 700;">
+                            ${isCorrect ? '✅ Jawaban Tepat' : '❌ Salah'}
+                        </span>
+                    </div>
+                    <div class="review-card-q">${q.question.replace(/\n/g, '<br>')}</div>
+                    <div class="ans-row">
+                        ${isCorrect ? `
+                            <div class="ans-pill ans-user-correct">
+                                <strong>Jawaban Kamu:</strong> ${userChoiceText}
+                            </div>
+                        ` : `
+                            <div class="ans-pill ans-user-wrong">
+                                <strong>Jawaban Kamu:</strong> ${userChoiceText}
+                            </div>
+                            <div class="ans-pill ans-correct-key">
+                                <strong>Kunci Jawaban Benar:</strong> ${correctChoiceText}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        });
+
+        if (itemsHtml === '') {
+            itemsHtml = `
+                <div style="text-align: center; padding: 25px; color: #718096; font-size: 0.9rem;">
+                    ${effectiveFilter === 'wrong' ? '🎉 Hebat! Tidak ada soal yang salah.' : 'Tidak ada soal dalam kategori ini.'}
+                </div>
+            `;
+        }
+
+        listEl.innerHTML = itemsHtml;
     }
 
     function copyResultText() {
