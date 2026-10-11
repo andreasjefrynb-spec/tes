@@ -1,0 +1,8 @@
+{
+  "name": "日本語クラス - Tes N5",
+  "description": "Tes Kemampuan Bahasa Jepang Level N5 (KOTOBA-APP)",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

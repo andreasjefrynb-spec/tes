@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語クラス - Tes N5</title>
+    <meta name="description" content="Tes Kemampuan Bahasa Jepang Level N5 (KOTOBA-APP)" />
+    <meta property="og:title" content="日本語クラス - Tes N5" />
+    <meta property="og:description" content="Tes Kemampuan Bahasa Jepang Level N5 (KOTOBA-APP)" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 550px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: #3182ce;
+        }
+        .btn-start {
+            width: 100%;
+            padding: 12px;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .btn-start:hover {
+            background-color: #2b6cb0;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #edf2f7;
+        }
+        .timer {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #e53e3e;
+            background: #fff5f5;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #feb2b2;
+        }
+        .user-name-display {
+            font-size: 0.9rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        .progress-bar {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        .question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            min-height: 50px;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-option {
+            background-color: #f7fafc;
+            border: 2px solid #e2e8f0;
+            padding: 14px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #4a5568;
+        }
+        .btn-option:hover {
+            background-color: #edf2f7;
+            border-color: #cbd5e0;
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+        .result-screen {
+            text-align: center;
+        }
+        .score-box {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+        }
+        .score-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin: 10px 0 5px 0;
+        }
+        .grade-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        .btn-wa {
+            width: 100%;
+            padding: 14px;
+            background-color: #25D366;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            transition: background-color 0.2s ease;
+        }
+        .btn-wa:hover {
+            background-color: #1eb857;
+        }
+        .btn-copy {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #ffffff;
+            color: #2b6cb0;
+            border: 2px solid #3182ce;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-copy:hover {
+            background-color: #ebf8ff;
+        }
+        .btn-retry {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #edf2f7;
+            color: #4a5568;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-retry:hover {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e53e3e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            max-width: 90%;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -10px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-alert" class="custom-alert"></div>
+
+<div class="container">
+    <!-- Halaman Utama / Input Nama -->
+    <div id="start-screen" class="screen active">
+        <h1>日本語クラス</h1>
+        <div class="subtitle">Tes Kemampuan Bahasa Jepang Level N5</div>
+        
+        <div class="input-group">
+            <label for="username">Nama Peserta Tes:</label>
+            <input type="text" id="username" placeholder="Masukkan nama lengkap Anda..." required autocomplete="name">
+        </div>
+        
+        <div style="background: #ebf8ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #2c5282;">
+            📌 <strong>Ketentuan Tes:</strong><br>
+            - Total: 20 Soal N5<br>
+            - Waktu: 5 Menit (300 detik)<br>
+            - Memilih jawaban akan otomatis lanjut ke soal berikutnya.<br>
+            - Nilai akan langsung muncul setelah tes selesai.
+        </div>
+
+        <button class="btn-start" onclick="startQuiz()">Mulai Tes Sekarang</button>
+    </div>
+
+    <!-- Halaman Kuis -->
+    <div id="quiz-screen" class="screen">
+        <div class="header-info">
+            <div class="user-name-display" id="display-user">Peserta: -</div>
+            <div class="timer" id="timer-display">05:00</div>
+        </div>
+        <div class="progress-bar" id="progress">Soal 1 dari 20</div>
+        <div class="question" id="question">Pertanyaan...</div>
+        <div class="options" id="options"></div>
+    </div>
+
+    <!-- Halaman Hasil Nilai -->
+    <div id="result-screen" class="screen result-screen">
+        <h1>日本語クラス</h1>
+        <div class="subtitle">Hasil Tes Kemampuan N5</div>
+
+        <div class="score-box">
+            <div style="font-size: 1rem; color: #4a5568;">Nama Peserta: <strong id="res-name">-</strong></div>
+            <div class="score-number" id="res-score">0 / 20 Benar</div>
+            <div class="grade-number" id="res-grade">Nilai Akhir: 0</div>
+            <div id="res-status" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem;"></div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #718096; margin-bottom: 12px;">
+            Kirimkan laporan hasil nilai Anda ke Grup WhatsApp:
+        </p>
+
+        <a id="wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-wa">
+            👥 Kirim Hasil ke Grup WhatsApp
+        </a>
+
+        <button id="copy-btn" onclick="copyResultText()" class="btn-copy">
+            📋 Salin Teks Laporan
+        </button>
+
+        <p style="font-size: 0.8rem; color: #718096; margin-top: 10px; line-height: 1.4;">
+            💡 <em>Pilih grup WhatsApp kelas Anda di daftar obrolan WhatsApp yang terbuka, atau gunakan tombol Salin lalu tempel langsung di grup.</em>
+        </p>
+
+        <button class="btn-retry" onclick="restartQuiz()">
+            🔄 Ulangi Tes
+        </button>
+    </div>
+</div>
+
+<script src="/kotoba_data.js"></script>
+<script>
+    function showAlert(message) {
+        const alertEl = document.getElementById('app-alert');
+        if (alertEl) {
+            alertEl.textContent = message;
+            alertEl.style.display = 'block';
+            setTimeout(() => {
+                alertEl.style.display = 'none';
+            }, 3000);
+        }
+    }
+    // Safe iframe replacement for alert
+    window.alert = showAlert;
+
+    const questions = [
+        {
+            question: "Isi titik-titik dengan partikel yang tepat:\nわたし ____ たなかです。",
+            options: ["は (ha)", "が (ga)", "を (wo)", "に (ni)"],
+            correct: 0
+        },
+        {
+            question: "Isi titik-titik dengan partikel kepemilikan:\nこれ ____ わたしの ほんです。",
+            options: ["の (no)", "は (ha)", "と (to)", "で (de)"],
+            correct: 1
+        },
+        {
+            question: "Pilih partikel alat/cara yang tepat:\nはし ____ ごはんを たべます。",
+            options: ["に (ni)", "で (de)", "を (wo)", "へ (he)"],
+            correct: 1
+        },
+        {
+            question: "Pilih partikel waktu yang tepat:\nまいにち 7じ ____ おきます。",
+            options: ["で (de)", "に (ni)", "へ (he)", "と (to)"],
+            correct: 1
+        },
+        {
+            question: "Pilih partikel arah yang tepat:\nあした がっこう ____ いきます。",
+            options: ["へ (he / e)", "を (wo)", "から (kara)", "まで (made)"],
+            correct: 0
+        },
+        {
+            question: "Bentuk lampau positif dari kata kerja 「みます」 adalah...",
+            options: ["みます", "みました", "みません", "みましょう"],
+            correct: 1
+        },
+        {
+            question: "Bentuk negatif dari kata kerja 「たべます」 adalah...",
+            options: ["たべます", "たべません", "たべました", "たべたい"],
+            correct: 1
+        },
+        {
+            question: "Bentuk ajakan (Mari...) dari kata kerja 「のみます」 adalah...",
+            options: ["のみます", "のみましょう", "のみました", "のまない"],
+            correct: 1
+        },
+        {
+            question: "Apa arti dari kosakata 「本」(ほん)?",
+            options: ["Tas", "Buku", "Pensil", "Mobil"],
+            correct: 1
+        },
+        {
+            question: "Apa arti dari kosakata 「車」(くるま)?",
+            options: ["Rumah", "Sepeda", "Mobil", "Kereta"],
+            correct: 2
+        },
+        {
+            question: "Bagaimana cara membaca Kanji 「水」?",
+            options: ["き (Ki)", "ひ (Hi)", "みず (Mizu)", "つち (Tsuchi)"],
+            correct: 2
+        },
+        {
+            question: "Bagaimana cara membaca Kanji 「山」?",
+            options: ["やま (Yama)", "かわ (Kawa)", "うみ (Umi)", "そら (Sora)"],
+            correct: 0
+        },
+        {
+            question: "Bagaimana cara membaca Kanji 「日」?",
+            options: ["つき (Tsuki)", "ひ (Hi)", "き (Ki)", "かね (Kane)"],
+            correct: 1
+        },
+        {
+            question: "Lengkapi kalimat dengan kata sifat-i:\nこの おかしは ____ です。",
+            options: ["おいしい", "おいしく", "おいしかった", "おいし"],
+            correct: 0
+        },
+        {
+            question: "Lengkapi kalimat dengan kata sifat-na:\nたなかさんは ____ ひとです。",
+            options: ["しずかな", "しずかに", "しずか", "しずかく"],
+            correct: 0
+        },
+        {
+            question: "Bentuk lampau dari Kata Sifat-i 「あつい」 adalah...",
+            options: ["あついです", "あつかったです", "あつくないです", "あついた"],
+            correct: 1
+        },
+        {
+            question: "Pilih partikel bersama (dengan) yang tepat:\nともだち ____ えいがを みます。",
+            options: ["と (to)", "に (ni)", "で (de)", "を (wo)"],
+            correct: 0
+        },
+        {
+            question: "Pilih partikel objek yang tepat:\nごはん ____ たべます。",
+            options: ["を (wo)", "が (ga)", "に (ni)", "で (de)"],
+            correct: 0
+        },
+        {
+            question: "Kata penunjuk untuk 'Ini' (Benda dekat pembicara) adalah...",
+            options: ["これ (Kore)", "そこ (Soko)", "あちら (Achira)", "この (Kono)"],
+            correct: 0
+        },
+        {
+            question: "Kata tanya untuk menanyakan tempat adalah...",
+            options: ["どこ (Doko)", "だれ (Dare)", "いつ (Itsu)", "なに (Nani)"],
+            correct: 0
+        }
+    ];
+
+    let userName = "";
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timeLeft = 300; 
+    let timerInterval = null;
+    const targetPhone = "6281233624841";
+
+    function startQuiz() {
+        const nameInput = document.getElementById('username').value.trim();
+        if (!nameInput) {
+            showAlert("Silakan masukkan nama Anda terlebih dahulu!");
+            return;
+        }
+        userName = nameInput;
+        document.getElementById('display-user').innerText = `Peserta: ${userName}`;
+
+        document.getElementById('start-screen').classList.remove('active');
+        document.getElementById('result-screen').classList.remove('active');
+        document.getElementById('quiz-screen').classList.add('active');
+
+        currentQuestionIndex = 0;
+        score = 0;
+        timeLeft = 300;
+        startTimer();
+        loadQuestion();
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                showAlert("Waktu 5 menit telah habis!");
+                finishQuiz();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById('timer-display').innerText = 
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function loadQuestion() {
+        const q = questions[currentQuestionIndex];
+        document.getElementById('progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
+        document.getElementById('question').innerText = q.question;
+        
+        const optionsContainer = document.getElementById('options');
+        optionsContainer.innerHTML = '';
+
+        q.options.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.classList.add('btn-option');
+            btn.innerText = option;
+            btn.onclick = () => selectOption(index);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(selectedIndex) {
+        if (selectedIndex === questions[currentQuestionIndex].correct) {
+            score++;
+        }
+
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            clearInterval(timerInterval);
+            finishQuiz();
+        }
+    }
+
+    function finishQuiz() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.remove('active');
+        document.getElementById('result-screen').classList.add('active');
+
+        const finalGrade = Math.round((score / questions.length) * 100);
+        const isPassed = finalGrade >= 60;
+        const statusText = isPassed ? "LULUS (合格)" : "BELUM LULUS (不合格)";
+        const statusColor = isPassed ? "#38a169" : "#e53e3e";
+
+        // Tampilkan hasil secara jelas di layar
+        document.getElementById('res-name').innerText = userName;
+        document.getElementById('res-score').innerText = `${score} / ${questions.length} Benar`;
+        document.getElementById('res-grade').innerText = `Nilai Akhir: ${finalGrade}`;
+        
+        const statusEl = document.getElementById('res-status');
+        statusEl.innerText = statusText;
+        statusEl.style.color = statusColor;
+
+        // Siapkan tautan pengiriman pesan WhatsApp untuk Grup
+        currentWaMessage = 
+`*--- HASIL TES 日本語クラス ---*
+👤 *Nama Peserta:* ${userName}
+📊 *Jumlah Benar:* ${score} dari ${questions.length} soal
+💯 *Nilai Akhir:* ${finalGrade} / 100
+⏱️ *Sisa Waktu:* ${Math.floor(timeLeft / 60)} m ${timeLeft % 60} s
+📌 *Status:* ${statusText}`;
+
+        // Menggunakan Universal WhatsApp Share agar peserta bisa memilih Grup WA langsung
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(currentWaMessage)}`;
+        document.getElementById('wa-btn').href = waUrl;
+    }
+
+    function copyResultText() {
+        if (!currentWaMessage) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(currentWaMessage).then(() => {
+                showCopySuccess();
+            }).catch(() => {
+                fallbackCopy(currentWaMessage);
+            });
+        } else {
+            fallbackCopy(currentWaMessage);
+        }
+    }
+
+    function showCopySuccess() {
+        const copyBtn = document.getElementById('copy-btn');
+        if (copyBtn) {
+            const originalContent = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ Laporan Disalin!';
+            copyBtn.style.backgroundColor = '#e6fffa';
+            copyBtn.style.borderColor = '#38a169';
+            copyBtn.style.color = '#22543d';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalContent;
+                copyBtn.style.backgroundColor = '#ffffff';
+                copyBtn.style.borderColor = '#3182ce';
+                copyBtn.style.color = '#2b6cb0';
+            }, 2500);
+        }
+        showAlert("Teks laporan berhasil disalin! Silakan tempel (paste) di Grup WhatsApp Anda.");
+    }
+
+    function fallbackCopy(text) {
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = text;
+        tempTextArea.style.position = 'fixed';
+        tempTextArea.style.opacity = '0';
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        try {
+            document.execCommand('copy');
+            showCopySuccess();
+        } catch (e) {
+            showAlert("Silakan salin teks laporan secara manual.");
+        }
+        document.body.removeChild(tempTextArea);
+    }
+
+    function restartQuiz() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('result-screen').classList.remove('active');
+        document.getElementById('quiz-screen').classList.remove('active');
+        document.getElementById('start-screen').classList.add('active');
+    }
+
+    // Allow Enter key to submit start form
+    document.addEventListener('DOMContentLoaded', () => {
+        const usernameInput = document.getElementById('username');
+        if (usernameInput) {
+            usernameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    startQuiz();
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
