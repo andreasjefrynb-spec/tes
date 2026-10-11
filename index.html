@@ -361,7 +361,7 @@
         <div style="background: #ebf8ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #2c5282;">
             📌 <strong>Ketentuan Tes:</strong><br>
             - Total: 20 Soal N5<br>
-            - Waktu: 5 Menit (300 detik)<br>
+            - Waktu: 10 Menit (600 detik)<br>
             - Memilih jawaban akan otomatis lanjut ke soal berikutnya.<br>
             - Nilai akan langsung muncul setelah tes selesai.
         </div>
@@ -373,7 +373,7 @@
     <div id="quiz-screen" class="screen">
         <div class="header-info">
             <div class="user-name-display" id="display-user">Peserta: -</div>
-            <div class="timer" id="timer-display">05:00</div>
+            <div class="timer" id="timer-display">10:00</div>
         </div>
         <div class="progress-bar" id="progress">Soal 1 dari 20</div>
         <div class="question" id="question">Pertanyaan...</div>
@@ -551,7 +551,7 @@
     let userName = "";
     let currentQuestionIndex = 0;
     let score = 0;
-    let timeLeft = 300; 
+    let timeLeft = 600; 
     let timerInterval = null;
     let userAnswers = [];
     let currentFilter = 'wrong';
@@ -572,7 +572,7 @@
 
         currentQuestionIndex = 0;
         score = 0;
-        timeLeft = 300;
+        timeLeft = 600;
         userAnswers = new Array(questions.length).fill(null);
         currentFilter = 'wrong';
         startTimer();
@@ -588,7 +588,7 @@
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                showAlert("Waktu 5 menit telah habis!");
+                showAlert("Waktu 10 menit telah habis!");
                 finishQuiz();
             }
         }, 1000);
