@@ -351,7 +351,7 @@
     <!-- Halaman Utama / Input Nama -->
     <div id="start-screen" class="screen active">
         <h1>日本語クラス</h1>
-        <div class="subtitle">Tes Kemampuan Bahasa Jepang Level N5</div>
+        <div class="subtitle">Tes Minna no Nihongo - Bab 2 (第２課)</div>
         
         <div class="input-group">
             <label for="username">Nama Peserta Tes:</label>
@@ -360,10 +360,11 @@
         
         <div style="background: #ebf8ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #2c5282;">
             📌 <strong>Ketentuan Tes:</strong><br>
-            - Total: 20 Soal N5<br>
+            - Materi: Minna no Nihongo Bab 2 (これ/それ/あれ, この/その/あの, Kepemilikan, Kosakata Benda)<br>
+            - Total: 20 Soal<br>
             - Waktu: 10 Menit (600 detik)<br>
             - Memilih jawaban akan otomatis lanjut ke soal berikutnya.<br>
-            - Nilai akan langsung muncul setelah tes selesai.
+            - Nilai & pembahasan soal salah akan langsung muncul setelah tes selesai.
         </div>
 
         <button class="btn-start" onclick="startQuiz()">Mulai Tes Sekarang</button>
@@ -383,7 +384,7 @@
     <!-- Halaman Hasil Nilai -->
     <div id="result-screen" class="screen result-screen">
         <h1>日本語クラス</h1>
-        <div class="subtitle">Hasil Tes Kemampuan N5</div>
+        <div class="subtitle">Hasil Tes Minna no Nihongo - Bab 2</div>
 
         <div class="score-box">
             <div style="font-size: 1rem; color: #4a5568;">Nama Peserta: <strong id="res-name">-</strong></div>
@@ -447,103 +448,108 @@
 
     const questions = [
         {
-            question: "Isi titik-titik dengan partikel yang tepat:\nわたし ____ たなかです。",
-            options: ["は (ha)", "が (ga)", "を (wo)", "に (ni)"],
+            question: "Kata penunjuk untuk benda yang berada dekat dengan pembicara adalah...",
+            options: ["それ (Sore)", "これ (Kore)", "あれ (Are)", "どれ (Dore)"],
+            correct: 1
+        },
+        {
+            question: "Lengkapi percakapan berikut:\nA: 「____ は じしょですか。」\nB: 「はい、これは じしょです。」",
+            options: ["これ (Kore)", "それ (Sore)", "あれ (Are)", "どれ (Dore)"],
+            correct: 1
+        },
+        {
+            question: "Kata penunjuk untuk benda yang letaknya jauh dari pembicara maupun lawan bicara adalah...",
+            options: ["これ (Kore)", "それ (Sore)", "どれ (Dore)", "あれ (Are)"],
+            correct: 3
+        },
+        {
+            question: "Pilihlah kata yang tepat untuk menerangkan kata benda di depan kalimat:\n「____ ほんは わたしのです。」",
+            options: ["この (Kono)", "これ (Kore)", "ここ (Koko)", "こちら (Kochira)"],
             correct: 0
         },
         {
-            question: "Isi titik-titik dengan partikel kepemilikan:\nこれ ____ わたしの ほんです。",
-            options: ["の (no)", "は (ha)", "と (to)", "で (de)"],
+            question: "Terjemahkan ke dalam bahasa Jepang:\n\"Buku ini adalah milik Tanaka.\"",
+            options: [
+                "これ ほんは たなかさん です。",
+                "この ほんは たなかさんの です。",
+                "その ほんは たなかさん です。",
+                "あれ ほんは たなかさんの です。"
+            ],
             correct: 1
         },
         {
-            question: "Pilih partikel alat/cara yang tepat:\nはし ____ ごはんを たべます。",
-            options: ["に (ni)", "で (de)", "を (wo)", "へ (he)"],
-            correct: 1
-        },
-        {
-            question: "Pilih partikel waktu yang tepat:\nまいにち 7じ ____ おきます。",
-            options: ["で (de)", "に (ni)", "へ (he)", "と (to)"],
-            correct: 1
-        },
-        {
-            question: "Pilih partikel arah yang tepat:\nあした がっこう ____ いきます。",
-            options: ["へ (he / e)", "を (wo)", "から (kara)", "まで (made)"],
-            correct: 0
-        },
-        {
-            question: "Bentuk lampau positif dari kata kerja 「みます」 adalah...",
-            options: ["みます", "みました", "みません", "みましょう"],
-            correct: 1
-        },
-        {
-            question: "Bentuk negatif dari kata kerja 「たべます」 adalah...",
-            options: ["たべます", "たべません", "たべました", "たべたい"],
-            correct: 1
-        },
-        {
-            question: "Bentuk ajakan (Mari...) dari kata kerja 「のみます」 adalah...",
-            options: ["のみます", "のみましょう", "のみました", "のまない"],
-            correct: 1
-        },
-        {
-            question: "Apa arti dari kosakata 「本」(ほん)?",
-            options: ["Tas", "Buku", "Pensil", "Mobil"],
-            correct: 1
-        },
-        {
-            question: "Apa arti dari kosakata 「車」(くるま)?",
-            options: ["Rumah", "Sepeda", "Mobil", "Kereta"],
+            question: "Apa arti dari kosakata Bab 2 「かぎ」(kagi)?",
+            options: ["Payung", "Tas", "Kunci", "Jam tangan"],
             correct: 2
         },
         {
-            question: "Bagaimana cara membaca Kanji 「水」?",
-            options: ["き (Ki)", "ひ (Hi)", "みず (Mizu)", "つち (Tsuchi)"],
+            question: "Apa arti dari kosakata Bab 2 「かさ」(kasa)?",
+            options: ["Payung", "Koran", "Kamus", "Buku"],
+            correct: 0
+        },
+        {
+            question: "Apa arti dari kosakata Bab 2 「じしょ」(jisho)?",
+            options: ["Majalah", "Kamus", "Buku catatan", "Surat kabar"],
+            correct: 1
+        },
+        {
+            question: "Kata bahasa Jepang untuk \"Majalah\" adalah...",
+            options: ["しんぶん (Shinbun)", "てちょう (Techou)", "ほん (Hon)", "ざっし (Zasshi)"],
+            correct: 3
+        },
+        {
+            question: "Kata bahasa Jepang untuk \"Koran / Surat Kabar\" adalah...",
+            options: ["しんぶん (Shinbun)", "めいし (Meishi)", "てちょう (Techou)", "ざっし (Zasshi)"],
+            correct: 0
+        },
+        {
+            question: "Lengkapi kalimat tanya untuk menanyakan nama benda:\n「これは ____ ですか。」\n「ボールペンです。」",
+            options: ["だれ (dare)", "どこ (doko)", "なん (nan)", "どれ (dore)"],
             correct: 2
         },
         {
-            question: "Bagaimana cara membaca Kanji 「山」?",
-            options: ["やま (Yama)", "かわ (Kawa)", "うみ (Umi)", "そら (Sora)"],
-            correct: 0
-        },
-        {
-            question: "Bagaimana cara membaca Kanji 「日」?",
-            options: ["つき (Tsuki)", "ひ (Hi)", "き (Ki)", "かね (Kane)"],
+            question: "Lengkapi respon afirmatif (membenarkan) berikut:\nA: 「それは ミラーさんの かばんですか。」\nB: 「はい、____。」",
+            options: ["ちがいます", "そうです", "じゃありません", "あります"],
             correct: 1
         },
         {
-            question: "Lengkapi kalimat dengan kata sifat-i:\nこの おかしは ____ です。",
-            options: ["おいしい", "おいしく", "おいしかった", "おいし"],
+            question: "Lengkapi kalimat penyangkalan berikut:\nA: 「これは えんぴつですか。」\nB: 「いいえ、____。シャープペンシルです。」",
+            options: ["そうです", "あります", "ちがいます", "どうも"],
+            correct: 2
+        },
+        {
+            question: "Pilihlah kalimat pertanyaan pilihan (alternatif) yang tepat:\n「これは 『9』 ですか、____ ですか。」",
+            options: ["『7』 の", "『7』 と", "『7』 から", "『7』"],
+            correct: 3
+        },
+        {
+            question: "Lengkapi kalimat untuk menanyakan topik / isi buku:\n「これは ____ の ほんですか。」\n「じどうしゃの ほんです。」",
+            options: ["なん (nan)", "だれ (dare)", "どこ (doko)", "どの (dono)"],
             correct: 0
         },
         {
-            question: "Lengkapi kalimat dengan kata sifat-na:\nたなかさんは ____ ひとです。",
-            options: ["しずかな", "しずかに", "しずか", "しずかく"],
-            correct: 0
-        },
-        {
-            question: "Bentuk lampau dari Kata Sifat-i 「あつい」 adalah...",
-            options: ["あついです", "あつかったです", "あつくないです", "あついた"],
+            question: "Lengkapi kalimat untuk menanyakan pemilik benda:\n「あの かさは ____ のですか。」\n「さとうさんの です。」",
+            options: ["なん (nan)", "だれ (dare)", "どれ (dore)", "いつ (itsu)"],
             correct: 1
         },
         {
-            question: "Pilih partikel bersama (dengan) yang tepat:\nともだち ____ えいがを みます。",
-            options: ["と (to)", "に (ni)", "で (de)", "を (wo)"],
+            question: "Apa arti dari kosakata Bab 2 「てちょう」(techou)?",
+            options: ["Buku agenda / Buku saku", "Kartu nama", "Kotak pensil", "Kamus tebal"],
             correct: 0
         },
         {
-            question: "Pilih partikel objek yang tepat:\nごはん ____ たべます。",
-            options: ["を (wo)", "が (ga)", "に (ni)", "で (de)"],
-            correct: 0
+            question: "Apa arti dari kosakata Bab 2 「めいし」(meishi)?",
+            options: ["Kartu ATM", "Kunci kamar", "Kartu nama", "Karcis kereta"],
+            correct: 2
         },
         {
-            question: "Kata penunjuk untuk 'Ini' (Benda dekat pembicara) adalah...",
-            options: ["これ (Kore)", "そこ (Soko)", "あちら (Achira)", "この (Kono)"],
-            correct: 0
+            question: "Ketika memberikan suatu barang / oleh-oleh kepada orang lain, ungkapan yang sopan adalah...",
+            options: ["どうも (Doumo)", "どうぞ (Douzo)", "いただきます (Itadakimasu)", "ごちそうさま (Gochisousama)"],
+            correct: 1
         },
         {
-            question: "Kata tanya untuk menanyakan tempat adalah...",
-            options: ["どこ (Doko)", "だれ (Dare)", "いつ (Itsu)", "なに (Nani)"],
+            question: "Pada percakapan Bab 2, ungkapan saat berkenalan dengan tetangga baru adalah:\n「これから ____ に なります。」\n「こちらこそ よろしく。」",
+            options: ["おせわ (osewa)", "おだいじ (odaiji)", "おつかれ (otsukare)", "おねがい (onegai)"],
             correct: 0
         }
     ];
@@ -669,7 +675,7 @@
 
         // Siapkan tautan pengiriman pesan WhatsApp untuk Grup
         currentWaMessage = 
-`*--- HASIL TES 日本語クラス ---*
+`*--- HASIL TES 日本語クラス (Minna no Nihongo Bab 2) ---*
 👤 *Nama Peserta:* ${userName}
 📊 *Jumlah Benar:* ${score} dari ${questions.length} soal
 💯 *Nilai Akhir:* ${finalGrade} / 100
